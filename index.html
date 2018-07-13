@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vue_Bootstrap</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="./css/common.css">
+</head>
+<body>
+    <div id="example">
+
+      <max-menu
+        :title="'크라우드소싱 운영툴'"
+        :menus="menus"
+        @select-menu="selectMenu"
+      >
+      </max-menu>
+
+
+      <max-form
+        :list="list"
+        :is-valid="false"
+        :valid-length="6"
+        class="bg-light"
+        @on-submit="onSubmit"
+      >
+        <div class="form-row">
+          <max-input
+            :label-name="'전화번호'"
+            :input-type="'tel'"
+            :placeholder="'010-1111-1111'"
+            :is-validation="false"
+            :name="'test1'"
+            @get-input-value="getInputValue"
+          ></max-input>
+          <max-input
+            label-name="이메일"
+            input-type="email"
+            placeholder="이메일@com"
+            is-validation="true"
+            name="이메일"
+            @get-input-value="getInputValue"
+          ></max-input>
+
+          <max-radio
+            :label-name="'라디오버튼'"
+            :items="radioItems"
+            :group-name="'test-radio'"
+            :is-inline="true"
+            :is-validation="false"
+            :name="'radio'"
+            @get-input-value="getInputValue"
+          ></max-radio>
+        </div>
+
+        <div class="form-row">
+          <max-input
+            :label-name="'전화번호'"
+            :input-type="'date'"
+            :placeholder="'010-1111-1111'"
+            :is-validation="false"
+            :name="'test333'"
+            @get-input-value="getInputValue"
+          ></max-input>
+
+          <max-select
+            :label-name="'선택'"
+            :name="'select'"
+            :items="selectItems"
+            :is-validation="false"
+            @get-input-value="getInputValue"
+          ></max-select>
+
+          <max-checkbox
+            :label-name="'체크박스버튼'"
+            :items="checkboxItems"
+            :group-name="'test-checkbox'"
+            :is-inline="true"
+            :is-validation="false"
+            @get-input-value="getInputValue"
+          ></max-checkbox>
+        </div>
+
+      </max-form>
+
+
+
+      <max-table
+        :uniqId="1"
+        :titles="tbTitles"
+        :contents="tbContents"
+        @table-link-click="moveItems"
+        @table-btn-click="tableBtnClick"
+      >
+      </max-table>
+      <max-pagination
+        v-show="tbContents.length"
+        :start="page.start"
+        :limit="page.limit"
+        :total="page.total"
+        :show-page-num="page.showPageNum"
+        @change-page="changePage"
+      ></max-pagination>
+
+
+      <max-list
+        :list="nlist"
+      ></max-list>
+
+      <max-image-list
+        :list="imageList"
+      ></max-image-list>
+
+      <max-modal
+        :title="'모달'"
+        :type="'alert'"
+        :size="'large'"
+        :is-open="isOpen"
+        :is-height-resizing="true"
+        @close-modal="isOpen = false"
+        @confirm-modal="cofirmModal"
+      >
+        <max-image-list
+          :list="imageList"
+        ></max-image-list>
+      </max-modal>
+
+      <max-toast
+        :text="toast.text"
+        :is-open="toast.isOpen"
+        :type="toast.type"
+      ></max-toast>
+
+      <button type="button" class="btn btn-primary" @click.prevent="isOpen = true">Large modal</button>
+
+    </div>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="./components/form.js"></script>
+<script src="./components/table.js"></script>
+<script src="./components/pagination.js"></script>
+<script src="./components/menu.js"></script>
+<script src="./components/modal.js"></script>
+<script src="./components/list.js"></script>
+<script src="./components/toast.js"></script>
+
+<script>
+  (function() {
+    let dropdownMenus = [
+      {name: 'Action', link: '#', selected: true},
+      {name: 'Another action', link: '#', selected: true},
+      {name: 'Something else here', link: '#', selected: true}
+    ];
+    let subMenus = [
+      {name: 'Dashboard', link: '#', selected: true},
+      {name: '투', link: '#', selected: false},
+      {name: '쓰리', link: '#', selected: false},
+      {name: '포', link: '#', selected: false}
+    ]
+
+    let menus = [
+      {name: '이미지 검증 데이터 관리', link: '#', selected: true, subMenus: [
+        {name: '태그 검증 관리', link: '#', selected: true},
+        {name: '질의 문답 검증 관리', link: '#', selected: false},
+      ]},
+      {name: '검증 현황', link: '#', selected: false, subMenus: [
+        {name: '이미지 검증내역', link: '#', selected: true},
+        {name: '감정 검증내역(준비)', link: '#', selected: false},
+      ]},
+      {name: '이미지', link: '#', selected: false, subMenus},
+      {name: 'Action', link: '#none', selected: false, dropdownMenus}
+    ]
+
+
+    let tbTitles = [
+        { name: "DATASETS_SEQ", label: "데이터번호", align: "center", type: "checkbox"},
+        { name: "DATASETS_NAME", label: "데이터셋명", align: "center"},
+        { name: "CATEGORY_TYPE", label: "카테고리"},
+        { name: "IMAGE_URL", label: "이미지", width: '30%'},
+        { name: "IMAGE_COUNT", label: "이미지 개수"},
+        { name: "MIN_EXPOSE_COUNT", label: "이미지 개수"},
+        { name: "CREATE_DATE", label: "생성 일자"},
+        { name: "DATASETS_SEQ", label: "", type: "button", btnName: "자세히보기"}
+    ];
+
+    let tbContents = [
+      {"DATASETS_SEQ":4,"DATASETS_NAME":"꽃","IMAGE_URL":"https://static1.squarespace.com/static/538a4829e4b05b7325cc4e0b/t/58d4cb1bf5e2311226370f4f/1490340644391/","IMAGE_COUNT":1307,"MIN_EXPOSE_COUNT":0,"CREATE_DATE":"2018-05-21T08:27:27Z"},{"DATASETS_SEQ":5,"DATASETS_NAME":"나무","IMAGE_URL":"https://scontent-sjc3-1.cdninstagram.com/vp/86380a8d893714da37ac8392e2794b27/5B9227B0/t51.2885-15/s320x320/e35/13735852_1123535434356600_771761495_n.jpg","IMAGE_COUNT":353,"MIN_EXPOSE_COUNT":0,"CREATE_DATE":"2018-05-21T08:27:27Z"}
+    ];
+
+    // 루트 인스턴스 생성
+    let vue = new Vue({
+      el: '#example',
+      data () {
+        return {
+          list: [],
+          selectItems: [{name:'One', value:1, selected:false},{name:'Two', value:2, selected:false},{name:'Three', value:3, selected:false}],
+          radioItems: [{'label': 'radio', 'value': '라디오', 'checked': false}, {'label': 'video', 'value': '비디오', 'checked': false}, {'label': 'video2', 'value': '비디오2', 'checked': false}],
+          checkboxItems: [{'name': 'c1', 'label': '체크박스1', 'value': 'checkbox1', 'checked': false}, {'name': 'c2', 'label': '체크박스2', 'value': 'checkbox2', 'checked': false}],
+
+          titles: ['checkbox', 'First', 'Last', 'Handle'],
+          contents: [['#', 'First', 'Last', 'Handle'], ['#', 'First', 'Last', 'Handle'], ['#', 'First', 'Last', 'Handle'], ['#', 'First', 'Last', 'Handle']],
+          menus: menus,
+
+          isOpen: false,
+
+          imageList: [{url: '', info: {TAG: '#고양이, #강아지', PRIORITY: 10, 'COUNT/MIN_EXPOSED': '5/10', DESCRIPTION: '비고', CREATE_DATE: '생성일', IMAGE_URL: '', COPY_URL: '', COPY_NAME: '다음위키', UPLOAD_TYPE: '비젼', DETAIL_URL: ''}}],
+
+          nlist: ['gogo', 'gg', '강아지', '고양이'],
+
+          tbTitles,
+          tbContents,
+          page: {
+            start: 0,
+            limit: 10,
+            total: 0,
+            showPageNum: 10
+          },
+          toast: {
+            text: '',
+            isOpen: true,
+            type: 'success'
+          }
+        }
+      },
+      created () {
+        console.log(this.menus)
+      },
+      methods: {
+        getInputValue (data) {
+          console.log(data)
+          if(this.list.length && !!this.list.filter(d => d.name === data.name).length) {
+            this.list.map(d => { if(d.name === data.name) { d.value = data.value } return d });
+          } else {
+            this.list.push(data);
+          }
+          if(!data.value) {
+            this.deleteListValue(data);
+          }
+        },
+        deleteListValue (data) {
+          this.list = this.list.filter(d => !!d.value);
+          console.log('deleteListValue==', this.list)
+        },
+        onSubmit () {
+          console.log('onSubmit------', this.list)
+        },
+        selectMenu (idx) {
+          this.menus = this.menus.map((menu, index) => {
+            menu.selected = false;
+            if(idx === index) {
+              menu.selected = true;
+            }
+            return menu;
+          });
+        },
+        showModal () {
+          this.isOpen = true;
+          console.log('showModal===', this.isOpen)
+        },
+        closeModal () {
+          this.isOpen = false;
+        },
+        cofirmModal () {
+
+        },
+        changePage (page) {
+          console.log(page)
+        },
+        moveItems () {
+          console.log('gg')
+        },
+        tableBtnClick (id) {
+          this.showModal()
+          console.log('tableBtnClick---', id)
+        }
+      }
+    });
+  })();
+
+
+</script>
+
+
+</body>
+</html>
